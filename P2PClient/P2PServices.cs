@@ -48,18 +48,18 @@ namespace P2P {
         }
 
         public static void GetFiles() {
-            Console.WriteLine(WebAccessor.ReadJsonFromUrl(WebAccessor.GetFilesUrl));
+            Console.WriteLine(WebAccessor.GetJsonFromUrl(WebAccessor.GetFilesUrl));
         }
 
         public static void GetPeers(string message = null) {
             if(message == null) {
-                Console.WriteLine(WebAccessor.ReadJsonFromUrl(WebAccessor.GetPeersUrl));
+                Console.WriteLine(WebAccessor.GetJsonFromUrl(WebAccessor.GetPeersUrl));
             } else {
                 Peer peer = new Peer();
 
 #warning Finish peer initialization
 
-                Console.WriteLine(WebAccessor.ReadJsonFromUrl(WebAccessor.GetPeerUrl(peer)));
+                Console.WriteLine(WebAccessor.GetJsonFromUrl(WebAccessor.GetPeerUrl(peer)));
             }
         }
 

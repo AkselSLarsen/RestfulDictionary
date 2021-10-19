@@ -18,11 +18,9 @@ namespace P2P {
         }
 
         public void Run() {
-            Task.Run(() => P2PClientSocket.ClientTextUI());
+            Task.Run(() => Server.Run());
 
-            Server.Run();
-
-            Console.ReadLine();
+            P2PClientSocket.ClientTextUI();
         }
 
 

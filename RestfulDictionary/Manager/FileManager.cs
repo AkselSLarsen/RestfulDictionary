@@ -59,5 +59,17 @@ namespace RestfulDictionary.Manager {
             }
             return re;
         }
+
+        public static FileEndPoint Get(string filename, Peer peer) {
+            FileEndPoint re = null;
+            foreach (FileEndPoint file in Data) {
+                if (file.Peer.Equals(peer)) {
+                    if(file.FileName == filename) {
+                        re = file;
+                    }
+                }
+            }
+            return re;
+        }
     }
 }

@@ -61,19 +61,19 @@ namespace P2P {
         }
 
         private static void Register(P2PServerSocket Server) {
-            WebAccessor.WriteJsonToUrl(WebAccessor.AddPeerUrl, P2PServerSocket.ToPeerJson(Server));
+            Console.Error.WriteLine(WebAccessor.PostJsonToUrl(WebAccessor.AddPeerUrl, P2PServerSocket.ToPeerJson(Server)));
 
             foreach (FileEndPoint file in Server.Repository.ToFileEndPoints(IJsonAble<Peer>.FromJson(P2PServerSocket.ToPeerJson(Server)))) {
-                WebAccessor.WriteJsonToUrl(WebAccessor.AddFileUrl, file.ToJson());
+                WebAccessor.PostJsonToUrl(WebAccessor.AddFileUrl, file.ToJson());
             }
         }
 
         private static void Deregister(P2PServerSocket Server) {
             Peer peer = ToPeer(Server);
-            WebAccessor.WriteJsonToUrl(WebAccessor.RemovePeerUrl, peer.ToJson());
+            WebAccessor.DeleteJsonFromUrl(WebAccessor.RemovePeerUrl(ToPeer(Server)));
 
             foreach (FileEndPoint file in Server.Repository.ToFileEndPoints(IJsonAble<Peer>.FromJson(P2PServerSocket.ToPeerJson(Server)))) {
-                WebAccessor.WriteJsonToUrl(WebAccessor.RemoveFileUrl, file.ToJson());
+                WebAccessor.DeleteJsonFromUrl(WebAccessor.RemoveFileUrl(file.FileName, file.Peer));
             }
         }
     }
