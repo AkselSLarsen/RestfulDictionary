@@ -31,6 +31,9 @@ namespace P2P {
 
                     if (message.ToLowerInvariant().StartsWith("q")) {
                         P2PServerSocket.Stop();
+                        end = true;
+                        Console.Clear();
+                        Console.WriteLine("Program shut down.");
 
                     } else if (message.ToLowerInvariant().StartsWith("getfiles") || message.ToLowerInvariant().StartsWith("gf")) {
                         P2PServices.GetFiles();

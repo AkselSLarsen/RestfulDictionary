@@ -6,7 +6,7 @@ namespace P2P {
         public static IPAddress IP = Dns.GetHostEntry(Dns.GetHostName()).AddressList[1]; //IPAddress.Any
         public static int Port = 2121;
 
-        public static string URLRoot = "http://localhost:43393/";
+        public static string URLRoot = "https://restfuldictionaryforp2pfilesharing.azurewebsites.net/";
 
         public static void Main() {
 

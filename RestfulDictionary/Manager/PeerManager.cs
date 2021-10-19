@@ -19,25 +19,19 @@ namespace RestfulDictionary.Manager {
         public static Peer Get(string ipv4, string ipv6, int port) {
             Peer peer = new Peer();
             try {
-                peer.IPv4 = uint.Parse(ipv4);
+                peer.IPv4 = long.Parse(ipv4);
                 peer.Port = port;
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
             try {
-                peer.IPv4FromString(ipv4);
+                peer.IPv4 = Peer.IPv4FromString(ipv4);
                 peer.Port = port;
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
             try {
-                peer.IPv6 = long.Parse(ipv6);
-                peer.Port = port;
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-            }
-            try {
-                peer.IPv6FromString(ipv6);
+                peer.IPv6 = ipv6;
                 peer.Port = port;
             } catch (Exception e) {
                 Console.WriteLine(e.Message);

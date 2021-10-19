@@ -38,35 +38,24 @@ namespace P2P {
         }
 
         public static Peer ToPeer(P2PServerSocket socket) {
-            return IJsonAble<Peer>.FromJson(ToPeerJson(socket));
+            string[] IPAndPort = socket.Server.LocalEndpoint.ToString().Split(":");
+
+            long? iPv4 = null;
+            string iPv6 = null;
+            int port = int.Parse(IPAndPort[1]);
+
+            List<string> files = socket.Repository.GetFileNames();
+
+            if (IPAndPort[0].Contains("[")) { //if we are using IPv6
+                iPv6 = IPAndPort[0];
+            } else { //else we assume we use IPv4
+                iPv4 = Peer.IPv4FromString(IPAndPort[0]);
+            }
+            return new Peer(iPv4, iPv6, port, files);
         }
 
         public static string ToPeerJson(P2PServerSocket socket) {
-
-            Console.WriteLine(socket.Server.Server.LocalEndPoint);
-
-            string[] IPAndPort = socket.Server.Server.LocalEndPoint.ToString().Split(":");
-
-            string iPv4 = "\"iPv4\":null";
-            string iPv6 = "\"iPv6\":null";
-            string port = "\"port\":" + IPAndPort[1];
-
-            string files = "\"files\":[";
-            if (socket.Repository.GetFileNames().Count > 0) {
-                foreach (string file in socket.Repository.GetFileNames()) {
-                    files += "\"" + "file" + "\"" + ",";
-                }
-                files = files.Remove(files.Length - 1);
-            }
-            files += "]";
-
-            
-            if (IPAndPort[0].Contains("[")) { //if we are using IPv6
-                iPv6 = "\"iPv6\":" + IPAndPort[0];
-            } else { //else we assume we use IPv4
-                iPv4 = "\"iPv4\":" + IPAndPort[0];
-            }
-            return $"{{{iPv4},{iPv6},{port},{files}}}";
+            return ToPeer(socket).ToJson();
 
             //Example: {"iPv4":0,"iPv6":null,"port":32,"files":["file1","file2","file4"]}
         }
