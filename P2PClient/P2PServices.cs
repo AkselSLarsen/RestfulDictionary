@@ -1,4 +1,5 @@
-﻿using RestfulDictionary.Model;
+﻿using RestfulDictionary.Interfaces;
+using RestfulDictionary.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,15 +52,15 @@ namespace P2P {
             Console.WriteLine(WebAccessor.GetJsonFromUrl(WebAccessor.GetFilesUrl));
         }
 
-        public static void GetPeers(string message = null) {
-            if(message == null) {
+        /// <summary>
+        /// Either gets all peers if the filename is null or gets all peers with a file of the given filename.
+        /// </summary>
+        /// <param name="filename">A string containing the filename that all peers we are getting should have</param>
+        public static void GetPeers(string filename = null) {
+            if(filename == null) {
                 Console.WriteLine(WebAccessor.GetJsonFromUrl(WebAccessor.GetPeersUrl));
             } else {
-                Peer peer = new Peer();
-
-#warning Finish peer initialization
-
-                Console.WriteLine(WebAccessor.GetJsonFromUrl(WebAccessor.GetPeerUrl(peer)));
+                Console.WriteLine(WebAccessor.GetJsonFromUrl(WebAccessor.GetPeersWithFileUrl(filename)));
             }
         }
 

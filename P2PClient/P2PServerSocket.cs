@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace P2P {
@@ -25,12 +24,16 @@ namespace P2P {
 
             end = false;
             while (!end) {
-                TcpClient peer = Server.AcceptTcpClient();
-                Console.WriteLine("A peer has connected");
-                Task.Run(() => P2PServices.ServicePeer(this, peer));
+                Task.Run(() => {
+                    TcpClient peer = Server.AcceptTcpClient();
+                    Console.WriteLine("A peer has connected");
+                    Task.Run(() => P2PServices.ServicePeer(this, peer));
+                });
             }
 
             Deregister(this);
+
+            Console.WriteLine("Program has shut down, you may close this window now.");
         }
 
         public static void Stop() {

@@ -21,6 +21,10 @@ namespace P2P {
             Task.Run(() => Server.Run());
 
             P2PClientSocket.ClientTextUI();
+
+            while(true) {
+                Console.ReadLine();
+            }
         }
 
 

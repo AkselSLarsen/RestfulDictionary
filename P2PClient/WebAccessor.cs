@@ -20,7 +20,7 @@ namespace P2P {
         }
 
         public static string GetPeersWithFileUrl(string filename) {
-            return Program.URLRoot + "/peer?filename=" + filename;
+            return Program.URLRoot + "/peer/fromfile?filename=" + filename;
         }
 
         public static string RemovePeerUrl(Peer peer) {

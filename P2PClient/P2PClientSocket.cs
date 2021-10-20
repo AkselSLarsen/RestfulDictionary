@@ -33,7 +33,10 @@ namespace P2P {
                         P2PServerSocket.Stop();
                         end = true;
                         Console.Clear();
-                        Console.WriteLine("Program shut down.");
+                        Console.WriteLine("Program is shutting down, please wait.");
+
+                    } else if (message.ToLowerInvariant().StartsWith("getpeerswithfile") || message.ToLowerInvariant().StartsWith("gpwf")) {
+                        P2PServices.GetPeers(message.Split(" ")[1]);
 
                     } else if (message.ToLowerInvariant().StartsWith("getfiles") || message.ToLowerInvariant().StartsWith("gf")) {
                         P2PServices.GetFiles();
@@ -41,15 +44,12 @@ namespace P2P {
                     } else if (message.ToLowerInvariant().StartsWith("getpeers") || message.ToLowerInvariant().StartsWith("gp")) {
                         P2PServices.GetPeers();
 
-                    } else if (message.ToLowerInvariant().StartsWith("getpeerswithfile") || message.ToLowerInvariant().StartsWith("gpwf")) {
-                        P2PServices.GetPeers(message);
-
-                    } else if (message.ToLowerInvariant().StartsWith("downloadfile") || message.ToLowerInvariant().StartsWith("df")) {
-                        P2PServices.DownloadFile(message);
-
                     } else if (message.ToLowerInvariant().StartsWith("downloadfilefrompeer") || message.ToLowerInvariant().StartsWith("dffp")) {
                         P2PServices.DownloadFile(message);
 
+                    } else if (message.ToLowerInvariant().StartsWith("downloadfile") || message.ToLowerInvariant().StartsWith("df")) {
+                        P2PServices.DownloadFile(message);
+                    
                     } else {
                         Console.WriteLine("Command \"" + message + "\" was not understood.");
                     }
