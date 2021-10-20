@@ -14,6 +14,9 @@ namespace P2P {
 
         public P2PClientSocket(IPAddress host, int port) {
             Client = new TcpClient(host.ToString(), port);
+            NetworkStream ns = Client.GetStream();
+            Reader = new StreamReader(ns);
+            Writer = new StreamWriter(ns);
         }
         
         public static void ClientTextUI() {

@@ -3,6 +3,7 @@ using RestfulDictionary.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -64,8 +65,39 @@ namespace P2P {
             }
         }
 
+        /// <summary>
+        /// If the message is split by one space then the peer we get the file from is a random peer with the file.
+        /// If the message is split by three spaces, then we get the file from the specified peer.
+        /// </summary>
+        /// <param name="message"></param>
         public static void DownloadFile(string message) {
-#warning Not implemented            
+            string[] splitMessage = message.Split(" ");
+
+            if (splitMessage.Length == 2) {
+                string peersAsJson = WebAccessor.GetJsonFromUrl(WebAccessor.GetPeersWithFileUrl(splitMessage[1]));
+
+                Peer[] peers = IJsonAble<Peer[]>.FromJson(peersAsJson);
+
+                DownloadFileFromPeer(splitMessage[1], peers[new Random().Next(0, peers.Length)]);
+            } else if(splitMessage.Length == 4) {
+                DownloadFileFromPeer(splitMessage[1], new Peer(splitMessage[2], int.Parse(splitMessage[3])));
+            } else { // if something goes wrong
+                throw new ArgumentException("message parameter must be a string with either one or three spaces");
+            }
+        }
+
+        private static void DownloadFileFromPeer(string filename, Peer peer) {
+            P2PClientSocket client = null;
+            if(peer.IPv4 != null) {
+                client = new P2PClientSocket(IPAddress.Parse(Peer.IPv4AsString((long)peer.IPv4)), peer.Port);
+            } else {
+                client = new P2PClientSocket(IPAddress.Parse(peer.IPv6), peer.Port);
+            }
+
+            client.Writer.WriteLine("get" + filename);
+            client.Writer.Flush();
+
+            ReceiveFile(client.Client, filename);
         }
 
         /// <summary>
@@ -99,6 +131,17 @@ namespace P2P {
             } else {
                 throw new Exception("File wasn't at " + uri.AbsolutePath);
             }
+        }
+
+        private static void ReceiveFile(TcpClient client, string filename) {
+            NetworkStream ns = client.GetStream();
+
+            FileStream file = File.Create(Directory.GetCurrentDirectory() + "\\" + filename);
+
+            using (Stream stream = file) {
+                ns.CopyTo(stream); //if server doesn’t close the socket, it will wait here forever
+            }
+            client.Close();
         }
     }
 }

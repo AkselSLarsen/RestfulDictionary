@@ -43,7 +43,11 @@ namespace RestfulDictionary.Model {
         }
 
         public Peer(string ip, int port) {
-            IPv6 = ip;
+            if(IPv4FromString(ip) >= 0) {
+                IPv4 = IPv4FromString(ip);
+            } else {
+                IPv6 = ip;
+            }
             Port = port;
         }
 
@@ -54,7 +58,11 @@ namespace RestfulDictionary.Model {
         }
 
         public Peer(string ip, int port, List<string> files) {
-            IPv6 = ip;
+            if (IPv4FromString(ip) >= 0) {
+                IPv4 = IPv4FromString(ip);
+            } else {
+                IPv6 = ip;
+            }
             Port = port;
             Files = files;
         }
@@ -80,15 +88,15 @@ namespace RestfulDictionary.Model {
         public static long IPv4FromString(string value) {
             if(!String.IsNullOrEmpty(value)) {
                 long re = 0;
-                string[] values = value.Split(".");
-                for (int i = 0; i < values.Length; i++) {
-                    try {
+                try {
+                    string[] values = value.Split(".");
+                    for (int i = 0; i < values.Length; i++) {
                         re += long.Parse(values[i]) * (i + 1);
-                    } catch (Exception e) {
-                        Console.WriteLine(e);
                     }
+                    return re;
+                } catch(Exception e) {
+                    Console.WriteLine(e);
                 }
-                return re;
             }
             return -1;
         }
