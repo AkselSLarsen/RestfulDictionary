@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestfulDictionary.Manager {
     public abstract class FileManager {
-        private static readonly List<FileEndPoint> Data = new List<FileEndPoint> {
-            new FileEndPoint(PeerManager.GetAll()[0], "file1"),
-            new FileEndPoint(PeerManager.GetAll()[0], "file2"),
-            new FileEndPoint(PeerManager.GetAll()[0], "file4"),
-            new FileEndPoint(PeerManager.GetAll()[1], "file4"),
-            new FileEndPoint(PeerManager.GetAll()[1], "file2"),
-            new FileEndPoint(PeerManager.GetAll()[1], "file3")
-        };
+        private static readonly List<FileEndPoint> Data = new List<FileEndPoint>();
 
         public static List<FileEndPoint> GetAll() {
             return new List<FileEndPoint>(Data);

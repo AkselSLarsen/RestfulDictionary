@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestfulDictionary.Manager {
     public abstract class PeerManager {
-        private static readonly List<Peer> Data = new List<Peer>
-        {
-            new Peer(0, 32, new List<string>() { "file1","file2","file4" }),
-            new Peer(int.MaxValue, 27757, new List<string>() { "file4","file2","file3" })
-        };
+        private static readonly List<Peer> Data = new List<Peer>();
 
         public static List<Peer> GetAll() {
             return new List<Peer>(Data);
