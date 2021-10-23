@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 
 namespace P2P {
@@ -8,9 +9,11 @@ namespace P2P {
 
         public static string URLRoot = "https://restfuldictionaryforp2pfilesharing.azurewebsites.net";
 
+        private static string folderOfFilesToShare = Directory.GetCurrentDirectory() + "";
+
         public static void Main() {
 
-            P2PDuelSocket socket = new P2PDuelSocket(IP, Port, new FileRepository());
+            P2PDuelSocket socket = new P2PDuelSocket(IP, Port, new FileRepository(folderOfFilesToShare));
             socket.Run();
 
             //Console.WriteLine(P2PServerSocket.ToPeerJson(socket.Server));

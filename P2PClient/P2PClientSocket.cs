@@ -57,7 +57,7 @@ namespace P2P {
                         Console.WriteLine("Command \"" + message + "\" was not understood.");
                     }
                 } catch (Exception e) {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.Message);                    
                     end = true;
                 }
             }

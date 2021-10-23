@@ -136,7 +136,16 @@ namespace P2P {
         private static void ReceiveFile(TcpClient client, string filename) {
             NetworkStream ns = client.GetStream();
 
-            FileStream file = File.Create(Directory.GetCurrentDirectory() + "\\" + filename);
+            string directory = Directory.GetCurrentDirectory();
+
+            while (!directory.EndsWith("Simple P2P")) {
+                int i = directory.LastIndexOf("\\");
+                directory = directory.Remove(i);
+            }
+
+            directory += "\\downloads\\";
+
+            FileStream file = File.Create(directory + "\\" + filename);
 
             using (Stream stream = file) {
                 ns.CopyTo(stream); //if server doesn’t close the socket, it will wait here forever

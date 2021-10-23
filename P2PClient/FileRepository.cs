@@ -1,6 +1,7 @@
 ﻿using RestfulDictionary.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace P2P {
@@ -13,6 +14,21 @@ namespace P2P {
 
         public FileRepository(Dictionary<string, Uri> fileLocationMap) {
             _fileLocationMap = fileLocationMap;
+        }
+
+        public FileRepository(string directory) {
+            _fileLocationMap = new Dictionary<string, Uri>();
+
+            while (!directory.EndsWith("Simple P2P")) {
+                int i = directory.LastIndexOf("\\");
+                directory = directory.Remove(i);
+            }
+
+            directory += "\\files";
+
+            foreach(string file in Directory.GetFiles(directory)) {
+                _fileLocationMap.Add(file.Replace(directory + "\\", ""), new Uri(file));
+            }
         }
 
         public bool AddFileWithLocation(string fileName, Uri location) {

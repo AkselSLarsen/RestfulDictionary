@@ -64,7 +64,7 @@ namespace P2P {
         }
 
         private static void Register(P2PServerSocket Server) {
-            Console.Error.WriteLine(WebAccessor.PostJsonToUrl(WebAccessor.AddPeerUrl, P2PServerSocket.ToPeerJson(Server)));
+            WebAccessor.PostJsonToUrl(WebAccessor.AddPeerUrl, P2PServerSocket.ToPeerJson(Server));
 
             foreach (FileEndPoint file in Server.Repository.ToFileEndPoints(IJsonAble<Peer>.FromJson(P2PServerSocket.ToPeerJson(Server)))) {
                 WebAccessor.PostJsonToUrl(WebAccessor.AddFileUrl, file.ToJson());

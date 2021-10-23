@@ -12,8 +12,8 @@ namespace P2P {
         public static string GetPeersUrl = Program.URLRoot + "";
         public static string AddPeerUrl = Program.URLRoot + "";
 
-        public static string GetFilesUrl = Program.URLRoot + "files";
-        public static string AddFileUrl = Program.URLRoot + "files";
+        public static string GetFilesUrl = Program.URLRoot + "/files";
+        public static string AddFileUrl = Program.URLRoot + "/files";
 
         public static string GetPeerUrl(Peer peer) {
             return Program.URLRoot + "/peer?ipv4=" + peer.IPv4 + "&ipv6=" + peer.IPv6 + "&port=" + peer.Port;
@@ -44,7 +44,7 @@ namespace P2P {
             try {
                 return WebAccess.GetAsync(Url).Result.Content.ReadAsStringAsync().Result;
             } catch (Exception e) {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + "\nFailed the get request to \"" + Url + "\".");
             }
             return "";
         }
@@ -54,7 +54,7 @@ namespace P2P {
                 HttpContent content = new StringContent(Json, Encoding.UTF8, "application/json");
                 return WebAccess.PostAsync(Url, content).Result.Content.ReadAsStringAsync().Result;
             } catch (Exception e) {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + "\nFailed the post request to \"" + Url + "\" with \"" + Json + "\" in body.");
             }
             return null;
         }
@@ -63,7 +63,7 @@ namespace P2P {
             try {
                 return WebAccess.DeleteAsync(Url).Result.Content.ReadAsStringAsync().Result;
             } catch (Exception e) {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + "\nFailed the delete request to \"" + Url + "\".");
             }
             return null;
         }
