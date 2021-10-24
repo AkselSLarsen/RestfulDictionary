@@ -71,28 +71,52 @@ namespace P2P {
         /// </summary>
         /// <param name="message"></param>
         public static void DownloadFile(string message) {
+
+            string file = AskForFile();
+
             string[] splitMessage = message.Split(" ");
 
-            if (splitMessage.Length == 2) {
-                string peersAsJson = WebAccessor.GetJsonFromUrl(WebAccessor.GetPeersWithFileUrl(splitMessage[1]));
+            if (splitMessage.Length == 1) {
+                string peersAsJson = WebAccessor.GetJsonFromUrl(WebAccessor.GetPeersWithFileUrl(file));
 
-                Peer[] peers = IJsonAble<Peer[]>.FromJson(peersAsJson);
+#warning Delete debug info
+                Console.WriteLine("_______________________________1");
+                Console.WriteLine(peersAsJson);
 
-                DownloadFileFromPeer(splitMessage[1], peers[new Random().Next(0, peers.Length)]);
-            } else if(splitMessage.Length == 4) {
-                DownloadFileFromPeer(splitMessage[1], new Peer(splitMessage[2], int.Parse(splitMessage[3])));
+                Peer[] peers = IJsonAble<Peer>.FromJsonArray(peersAsJson);
+
+#warning Delete debug info
+                Console.WriteLine("_______________________________2");
+                foreach(Peer p in peers) { Console.WriteLine(p.ToString()); }
+
+                DownloadFileFromPeer(file, peers[new Random().Next(0, peers.Length)]);
+            } else if(splitMessage.Length == 3) {
+                DownloadFileFromPeer(file, new Peer(splitMessage[1], int.Parse(splitMessage[2])));
             } else { // if something goes wrong
-                throw new ArgumentException("message parameter must be a string with either one or three spaces");
+                throw new ArgumentException("message parameter must be a string with either two or no spaces");
             }
+        }
+
+        private static string AskForFile() {
+            Console.WriteLine("Please write the name of the desired file.");
+            return Console.ReadLine();
         }
 
         private static void DownloadFileFromPeer(string filename, Peer peer) {
             P2PClientSocket client = null;
-            if(peer.IPv4 != null) {
-                client = new P2PClientSocket(IPAddress.Parse(Peer.IPv4AsString((long)peer.IPv4)), peer.Port);
+
+#warning Delete debug info
+            Console.WriteLine("_______________________________3");
+            Console.WriteLine(peer.IPv4);
+
+            if (peer.IPv4 != null) {
+                client = new P2PClientSocket(IPAddress.Parse(Peer.IPv4AsString(peer.IPv4)), peer.Port);
             } else {
                 client = new P2PClientSocket(IPAddress.Parse(peer.IPv6), peer.Port);
             }
+
+#warning Delete debug info
+            Console.WriteLine("_______________________________4");
 
             client.Writer.WriteLine("get" + filename);
             client.Writer.Flush();
@@ -145,10 +169,10 @@ namespace P2P {
 
             directory += "\\downloads\\";
 
-            FileStream file = File.Create(directory + "\\" + filename);
+            FileStream file = File.Create(directory + filename);
 
             using (Stream stream = file) {
-                ns.CopyTo(stream); //if server doesn’t close the socket, it will wait here forever
+                ns.CopyTo(stream);
             }
             client.Close();
         }

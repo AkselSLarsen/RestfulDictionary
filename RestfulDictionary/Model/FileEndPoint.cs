@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RestfulDictionary.Model {
@@ -10,11 +11,13 @@ namespace RestfulDictionary.Model {
         private Peer _peer;
         private string _fileName;
 
+        [JsonPropertyName("Peer")]
         public Peer Peer {
             get { return _peer; }
             set { _peer = value; }
         }
 
+        [JsonPropertyName("FileName")]
         public string FileName {
             get { return _fileName; }
             set { _fileName = value; }

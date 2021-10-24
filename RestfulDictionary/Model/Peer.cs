@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RestfulDictionary.Model {
@@ -13,21 +14,25 @@ namespace RestfulDictionary.Model {
         private int _port;
         private List<string> _files;
 
+        [JsonPropertyName("IPv4")]
         public long? IPv4 {
             get { return _ipv4; }
             set { _ipv4 = value; }
         }
 
+        [JsonPropertyName("IPv6")]
         public string? IPv6 {
             get { return _ipv6; }
             set { _ipv6 = value; }
         }
 
+        [JsonPropertyName("Port")]
         public int Port {
             get { return _port; }
             set { _port = value; }
         }
 
+        [JsonPropertyName("Files")]
         public List<string> Files {
             get { return _files; }
             set { _files = value; }
@@ -103,6 +108,10 @@ namespace RestfulDictionary.Model {
 
         public string ToJson() {
             return JsonSerializer.Serialize(this, typeof(Peer));
+        }
+
+        public override string ToString() {
+            return ToJson();
         }
 
         public override bool Equals(object obj) {

@@ -16,5 +16,20 @@ namespace RestfulDictionary.Interfaces {
             }
             throw new Exception("Could not create T from JSON");
         }
+
+        public static T[] FromJsonArray(string json) {
+            List<T> tList = new List<T>();
+
+            while(json.Contains("{")) {
+                int start = json.LastIndexOf("{");
+                int end = json.LastIndexOf("}");
+
+                tList.Add(FromJson(json.Substring(start, (end-start)+1)));
+
+                json = json.Substring(0, start);
+            }
+
+            return tList.ToArray();
+        }
     }
 }

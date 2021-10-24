@@ -23,8 +23,8 @@ namespace P2P {
             Console.WriteLine("Write\n\"GetFiles\" or \"GF\" to list all files.\n" +
                 "\"GetPeers\" or \"GP\" to list all peers.\n" +
                 "\"GetPeersWithFile\" or \"GPWF\" followed by a space and the file's name to get all peers with the file.\n" +
-                "\"DownloadFile\" or \"DF\" followed by a space and the file's name download the file from one of the peers that have it.\n" +
-                "\"DownloadFileFromPeer\" or \"DFFP\" followed by the filename, ip and port divided by spaces.\n" +
+                "\"DownloadFile\" or \"DF\" to download a file from a random peer.\n" +
+                "\"DownloadFileFromPeer\" or \"DFFP\" followed by the ip and port divided by spaces, of the peer you want to download the file from.\n" +
                 "Or write Q to exit the program.");
 
             Boolean end = false;
