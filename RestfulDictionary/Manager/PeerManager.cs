@@ -62,18 +62,24 @@ namespace RestfulDictionary.Manager {
         }
 
         public static Peer Delete(Peer peer) {
-            foreach(FileEndPoint file in GetFilesOfPeer(peer)) {
-                FileManager.Delete(file);
+            bool deleted = Data.Remove(peer);
+
+            if (deleted) {
+                foreach (FileEndPoint file in GetFilesOfPeer(peer)) {
+                    FileEndPoint deletedfile = FileManager.Delete(file);
+                    if (deletedfile == null) {
+                        throw new Exception("Tried to delete file that wasn't there. As this operation is automated, it will never be caused by human error.");
+                    }
+                }
             }
 
-            bool deleted = Data.Remove(peer);
             return deleted ? peer : null;
         }
 
         public static List<FileEndPoint> GetFilesOfPeer(Peer peer) {
             List<FileEndPoint> re = new List<FileEndPoint>();
             foreach (FileEndPoint file in FileManager.GetAll()) {
-                if(file.Peer == peer) {
+                if(file.Peer.Equals(peer)) {
                     re.Add(file);
                 }
             }
