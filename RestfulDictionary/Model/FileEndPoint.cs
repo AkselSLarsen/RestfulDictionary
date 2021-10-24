@@ -36,7 +36,7 @@ namespace RestfulDictionary.Model {
         public override bool Equals(object obj) {
             if (obj != null && GetType() == obj.GetType()) {
                 FileEndPoint file = (FileEndPoint)obj;
-                if (this.Peer.Equals(file.Peer) && this.FileName == file.FileName) {
+                if (this.Peer.Equals(file.Peer) && this.FileName.ToLowerInvariant() == file.FileName.ToLowerInvariant()) {
                     return true;
                 }
             }

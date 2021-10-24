@@ -74,7 +74,7 @@ namespace RestfulDictionary.Model {
             Files = files;
         }
 
-        public static string IPv4AsString(long ip) {
+        public static string IPv4AsString(long? ip) {
             string re = "";
 
             re += (ip % (256L * 256L * 256L * 256L) + ".");

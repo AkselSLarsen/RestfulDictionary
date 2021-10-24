@@ -61,7 +61,7 @@ namespace P2P {
 
         public static string DeleteJsonFromUrl(string Url) {
             try {
-                return WebAccess.DeleteAsync(Url).Result.Content.ReadAsStringAsync().Result;
+               return WebAccess.DeleteAsync(Url).Result.Content.ReadAsStringAsync().Result;
             } catch (Exception e) {
                 Console.WriteLine(e.Message + "\nFailed the delete request to \"" + Url + "\".");
             }
