@@ -54,12 +54,11 @@ namespace RestfulDictionary.Manager {
         }
 
         public static FileEndPoint Get(string filename, Peer peer) {
+            FileEndPoint fileToFind = new FileEndPoint(peer, filename);
             FileEndPoint re = null;
             foreach (FileEndPoint file in Data) {
-                if (file.Peer.Equals(peer)) {
-                    if(file.FileName == filename) {
-                        re = file;
-                    }
+                if (file.Equals(fileToFind)) {
+                    re = file;
                 }
             }
             return re;
