@@ -35,7 +35,7 @@ namespace P2P {
             return Program.URLRoot + "/files/bypeer?ipv4=" + peer.IPv4 + "&ipv6=" + peer.IPv6 + "&port=" + peer.Port;
         }
 
-
+        [Obsolete]
         public static string RemoveFileUrl(string filename, Peer peer) {
             return Program.URLRoot + "/files?filename=" + filename + "&ipv4=" + peer.IPv4 + "&ipv6=" + peer.IPv6 + "&port=" + peer.Port;
         }

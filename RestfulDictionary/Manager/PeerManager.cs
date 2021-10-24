@@ -62,6 +62,10 @@ namespace RestfulDictionary.Manager {
         }
 
         public static Peer Delete(Peer peer) {
+            foreach(FileEndPoint file in GetFilesOfPeer(peer)) {
+                FileManager.Delete(file);
+            }
+
             bool deleted = Data.Remove(peer);
             return deleted ? peer : null;
         }

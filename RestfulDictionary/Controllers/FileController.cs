@@ -69,6 +69,7 @@ namespace RestfulDictionary.Controllers {
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete]
+        [Obsolete]
         public IActionResult Delete([FromQuery] string filename, [FromQuery] string ipv4, [FromQuery] string ipv6, [FromQuery] int port) {
             Peer peer = PeerManager.Get(ipv4, ipv6, port);
             if(peer != null) {

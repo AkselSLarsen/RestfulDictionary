@@ -75,9 +75,11 @@ namespace P2P {
             Peer peer = ToPeer(Server);
             WebAccessor.DeleteJsonFromUrl(WebAccessor.RemovePeerUrl(ToPeer(Server)));
 
+            /* Couldn't get this to work, so I've automated it on serverside instead.
             foreach (FileEndPoint file in Server.Repository.ToFileEndPoints(IJsonAble<Peer>.FromJson(P2PServerSocket.ToPeerJson(Server)))) {
                 WebAccessor.DeleteJsonFromUrl(WebAccessor.RemoveFileUrl(file.FileName, file.Peer));
             }
+            */
         }
     }
 }
