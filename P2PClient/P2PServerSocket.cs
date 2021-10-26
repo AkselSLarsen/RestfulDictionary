@@ -26,7 +26,7 @@ namespace P2P {
             while (!end) {
                 Task.Run(() => {
                     TcpClient peer = Server.AcceptTcpClient();
-                    Console.WriteLine("A peer has connected");
+                    //Console.WriteLine("A peer has connected");
                     Task.Run(() => P2PServices.ServicePeer(this, peer));
                 });
             }

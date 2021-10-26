@@ -79,15 +79,9 @@ namespace P2P {
             if (splitMessage.Length == 1) {
                 string peersAsJson = WebAccessor.GetJsonFromUrl(WebAccessor.GetPeersWithFileUrl(file));
 
-#warning Delete debug info
-                Console.WriteLine("_______________________________1");
                 Console.WriteLine(peersAsJson);
 
                 Peer[] peers = IJsonAble<Peer>.FromJsonArray(peersAsJson);
-
-#warning Delete debug info
-                Console.WriteLine("_______________________________2");
-                foreach(Peer p in peers) { Console.WriteLine(p.ToString()); }
 
                 DownloadFileFromPeer(file, peers[new Random().Next(0, peers.Length)]);
             } else if(splitMessage.Length == 3) {
@@ -105,20 +99,13 @@ namespace P2P {
         private static void DownloadFileFromPeer(string filename, Peer peer) {
             P2PClientSocket client = null;
 
-#warning Delete debug info
-            Console.WriteLine("_______________________________3");
-            Console.WriteLine(peer.IPv4);
-
             if (peer.IPv4 != null) {
                 client = new P2PClientSocket(IPAddress.Parse(Peer.IPv4AsString(peer.IPv4)), peer.Port);
             } else {
                 client = new P2PClientSocket(IPAddress.Parse(peer.IPv6), peer.Port);
             }
 
-#warning Delete debug info
-            Console.WriteLine("_______________________________4");
-
-            client.Writer.WriteLine("get" + filename);
+            client.Writer.WriteLine("get " + filename);
             client.Writer.Flush();
 
             ReceiveFile(client.Client, filename);
@@ -140,20 +127,20 @@ namespace P2P {
             return re;
         }
 
-        private static void SendFile(TcpClient peer, Uri uri) {
-            if(File.Exists(uri.AbsolutePath)) {
-                using (FileStream fileStream = File.OpenRead(uri.AbsolutePath)) {
+        private static void SendFile(TcpClient peer, string path) {
+            if(File.Exists(path)) {
+                using (FileStream fileStream = File.OpenRead(path)) {
                     if(fileStream.CanRead) {
                         fileStream.CopyTo(peer.GetStream());
 
                         //peer.Close(); Has to be done, but is taken care of after the code exits the while loop of the ServicePeer method.
                     
                     } else {
-                        throw new Exception("File at " + uri.AbsolutePath + " wasn't readable");
+                        throw new Exception("File at " + path + " wasn't readable");
                     }
                 }
             } else {
-                throw new Exception("File wasn't at " + uri.AbsolutePath);
+                throw new Exception("File wasn't at " + path);
             }
         }
 
@@ -170,6 +157,8 @@ namespace P2P {
             directory += "\\downloads\\";
 
             FileStream file = File.Create(directory + filename);
+
+            Console.WriteLine("Successfully downloaded file \"" + filename + "\" to directory \"" + directory + "\".");
 
             using (Stream stream = file) {
                 ns.CopyTo(stream);

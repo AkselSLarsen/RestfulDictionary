@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestfulDictionary.Model;
+using System;
 using System.IO;
 using System.Net;
 
@@ -12,6 +13,11 @@ namespace P2P {
         private static string folderOfFilesToShare = Directory.GetCurrentDirectory() + "";
 
         public static void Main() {
+
+            Console.WriteLine(IP.ToString());
+            Peer peer = new Peer(IP.ToString(), Port);
+            Console.WriteLine(peer.IPv4);
+            Console.WriteLine(Peer.IPv4AsString(peer.IPv4));
 
             P2PDuelSocket socket = new P2PDuelSocket(IP, Port, new FileRepository(folderOfFilesToShare));
             socket.Run();

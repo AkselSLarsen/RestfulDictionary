@@ -1,11 +1,8 @@
 ﻿using RestfulDictionary.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace RestfulDictionary.Model {
     public class Peer : IJsonAble<Peer> {
@@ -16,26 +13,26 @@ namespace RestfulDictionary.Model {
 
         [JsonPropertyName("IPv4")]
         public long? IPv4 {
-            get { return _ipv4; }
-            set { _ipv4 = value; }
+            get => _ipv4;
+            set => _ipv4 = value;
         }
 
         [JsonPropertyName("IPv6")]
         public string? IPv6 {
-            get { return _ipv6; }
-            set { _ipv6 = value; }
+            get => _ipv6;
+            set => _ipv6 = value;
         }
 
         [JsonPropertyName("Port")]
         public int Port {
-            get { return _port; }
-            set { _port = value; }
+            get => _port;
+            set => _port = value;
         }
 
         [JsonPropertyName("Files")]
         public List<string> Files {
-            get { return _files; }
-            set { _files = value; }
+            get => _files;
+            set => _files = value;
         }
 
         public Peer() {
@@ -48,7 +45,7 @@ namespace RestfulDictionary.Model {
         }
 
         public Peer(string ip, int port) {
-            if(IPv4FromString(ip) >= 0) {
+            if (IPv4FromString(ip) >= 0) {
                 IPv4 = IPv4FromString(ip);
             } else {
                 IPv6 = ip;
@@ -82,24 +79,24 @@ namespace RestfulDictionary.Model {
         public static string IPv4AsString(long? ip) {
             string re = "";
 
-            re += (ip % (256L * 256L * 256L * 256L) + ".");
-            re += (ip % (256 * 256 * 256)) + ".";
-            re += (ip % (256 * 256)) + ".";
-            re += (ip % 256);
+            re += (ip % 256) + ".";
+            re += ((ip / (256)) % 256) + ".";
+            re += ((ip / (256 * 256)) % 256) + ".";
+            re += ((ip / (256 * 256 * 256)) % 256);
 
             return re;
         }
 
         public static long IPv4FromString(string value) {
-            if(!String.IsNullOrEmpty(value)) {
+            if (!String.IsNullOrEmpty(value)) {
                 long re = 0;
                 try {
                     string[] values = value.Split(".");
                     for (int i = 0; i < values.Length; i++) {
-                        re += long.Parse(values[i]) * (i + 1);
+                        re += long.Parse(values[i]) * (long)Math.Round((Math.Pow(256, i)));
                     }
                     return re;
-                } catch(Exception e) {
+                } catch (Exception e) {
                     Console.WriteLine(e);
                 }
             }
